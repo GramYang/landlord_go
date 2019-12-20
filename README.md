@@ -70,7 +70,7 @@
 
 # 什么是landlord_go
 
-根据[cellmesh_demo](https://github.com/davyxu/cellmesh_demo)写成的斗地主游戏后端，对接Android前端landlord_client
+根据[cellmesh_demo](https://github.com/davyxu/cellmesh_demo)写成的斗地主游戏后端，对接Android前端[landlord_client](https://github.com/GramYang/landlord_client)
 
 # 使用
 
