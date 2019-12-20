@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+package proto;
+
+message JsonREQ {
+    int32 JsonType = 1;
+	bytes Content = 2;
+}
+
+message JsonACK{
+    int32 JsonType = 1;
+	bytes Content = 2;
+}
+
+message TestACK{
+	string Dummy = 1;
+}
+
+message SubscribeChannelREQ {
+    string Channel = 1;
+}
+
+message SubscribeChannelACK {
+    string Channel = 1;
+}
+
+message SvcStatusACK {
+    string SvcID = 1;
+    int32 UserCount = 2;
+}
+
+message ServerInfo{
+    string IP = 1;
+    int32 Port = 2;
+}
+
+message PingACK {
+}
+
+message LoginREQ {
+	string Version = 1;
+	string Platform = 2;
+	bytes TokenReq = 3;
+}
+
+message LoginACK {
+	ResultCode Result = 1;
+	ServerInfo Server = 2;
+	int32 TokenAck = 3;
+	string GameSvcID = 4;
+}
+
+message VerifyREQ {
+	string GameToken = 1;
+	string GameSvcID = 2;
+}
+
+message VerifyACK {
+	ResultCode Result = 1;
+}
+
+enum ResultCode {
+	NoError = 0;
+	AgentNotFound = 1;
+	AgentAddressError = 2;
+	GameNotFound = 3;
+}
+
+//后端服务持有，如game
+message ClientID {
+	int64 ID = 1; //由TransmitACK的ClientID赋值，用于识别agent与client的session
+	string SvcID = 2; //所在后端服务的svcid
+}
+
+//后端关闭agent持有的与client的session
+message CloseClientACK {
+    repeated int64 ID = 1;
+    bool All = 2;
+}
+
+//agent关闭与client的session后通知对应的后端服务
+message ClientClosedACK {
+    ClientID ID = 1;
+}
+
+//用于将client的消息转发到后台服务，以及将后台服务的消息转发给client
+message TransmitACK {
+    uint32 MsgID = 1;
+    bytes MsgData = 2;
+    int64 ClientID = 3; //client-后台服务，用于标识client。ClientID由User传递，是agent与client的session的id
+    repeated int64 ClientIDList = 4; //后台服务-client，后台服务群发给多个client
+    bool All = 5;
+}
