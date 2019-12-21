@@ -3,8 +3,8 @@ package database
 import "database/sql"
 
 const (
-	UPDATE_SUCCESS = 300
-	UPDATE_SERVER_ERROR = 301
+	UPDATE_SUCCESS        = 300
+	UPDATE_SERVER_ERROR   = 301
 	UPDATE_PASSWORD_ERROR = 302
 )
 
@@ -42,7 +42,7 @@ func Lose(username, password string, money int32) int32 {
 	return UPDATE_PASSWORD_ERROR
 }
 
-func pstx(sql string, param ...interface{}) sql.Result{
+func pstx(sql string, money int32, name string) sql.Result {
 	tx, err := db.Begin()
 	if err != nil {
 		log.Errorln(err)
@@ -52,7 +52,7 @@ func pstx(sql string, param ...interface{}) sql.Result{
 	if err != nil {
 		log.Errorln(err)
 	}
-	res, err := stmt.Exec(param)
+	res, err := stmt.Exec(money, name)
 	if err != nil {
 		log.Errorln(err)
 	}
